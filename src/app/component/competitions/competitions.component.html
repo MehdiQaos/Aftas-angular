@@ -1,0 +1,74 @@
+<div class="container mt-5">
+  <table class="table table-striped table-hover">
+    <thead class="">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Code</th>
+        <th scope="col">Date</th>
+        <th scope="col">Start Time</th>
+        <th scope="col">End Time</th>
+        <th scope="col">Location</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let competition of competitions">
+        <th scope="row">{{competition.id}}</th>
+        <td>{{competition.code}}</td>
+        <td>{{competition.date}}</td>
+        <td>{{competition.startTime}}</td>
+        <td>{{competition.endTime}}</td>
+        <td>{{competition.location}}</td>
+        <td>
+          <button class="btn btn-sm btn-success" (click)="openEditModal(competition)">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="deleteCompetition(competition.id)">
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Edit Competition Modal -->
+<div class="modal" tabindex="-1" id="editCompetitionModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Competition</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editCompetitionForm">
+<!--        <form [formGroup]="editCompetitionForm" (ngSubmit)="updateCompetition()">-->
+          <div class="mb-3">
+            <label for="id" class="form-label">ID</label>
+            <input type="text" class="form-control" id="id" formControlName="id">
+          </div>
+          <div class="mb-3">
+            <label for="code" class="form-label">Code</label>
+            <input type="text" class="form-control" id="code" formControlName="code">
+          </div>
+          <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="text" class="form-control" id="date" formControlName="date">
+          </div>
+          <div class="mb-3">
+            <label for="startTime" class="form-label">Start Time</label>
+            <input type="text" class="form-control" id="startTime" formControlName="startTime">
+          </div>
+          <div class="mb-3">
+            <label for="endTime" class="form-label">End Time</label>
+            <input type="text" class="form-control" id="endTime" formControlName="endTime">
+          </div>
+          <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" class="form-control" id="location" formControlName="location">
+          </div>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
