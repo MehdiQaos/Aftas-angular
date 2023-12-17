@@ -31,8 +31,34 @@
   </table>
 </div>
 
+<div class="container mt-5">
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item" [class.disabled]="pageFirst">
+      <button (click)="previousPage()" [disabled]="pageFirst" class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </button>
+    </li>
+    <li *ngIf="!pageFirst" class="page-item">
+      <button (click)="previousPage()" class="page-link">{{ currentPage?.pageNumber ?? 1 }}</button>
+    </li>
+    <li class="page-item active">
+      <button class="page-link">{{ (currentPage?.pageNumber ?? 1) + 1 }}</button>
+    </li>
+    <li *ngIf="!pageLast" class="page-item">
+      <button (click)="nextPage()" class="page-link">{{ (currentPage?.pageNumber ?? 0) + 2 }}</button>
+    </li>
+    <li class="page-item" [class.disabled]="pageLast">
+      <button (click)="nextPage()" [disabled]="pageLast" class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </button>
+    </li>
+  </ul>
+</nav>
+</div>
+
 <!-- Edit Competition Modal -->
-<div class="modal" tabindex="-1" id="editCompetitionModal">
+<div class="modal fade" tabindex="-1" id="editCompetitionModal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -40,34 +66,60 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="editCompetitionForm">
 <!--        <form [formGroup]="editCompetitionForm" (ngSubmit)="updateCompetition()">-->
+        <form>
           <div class="mb-3">
             <label for="id" class="form-label">ID</label>
-            <input type="text" class="form-control" id="id" formControlName="id">
+            <input type="number" class="form-control" name="id" id="id" [(ngModel)]="selectedCompetition.id">
           </div>
           <div class="mb-3">
             <label for="code" class="form-label">Code</label>
-            <input type="text" class="form-control" id="code" formControlName="code">
+            <input type="text" class="form-control" name="code" id="code" [(ngModel)]="selectedCompetition.code">
           </div>
           <div class="mb-3">
             <label for="date" class="form-label">Date</label>
-            <input type="text" class="form-control" id="date" formControlName="date">
+            <input type="text" class="form-control" name="date" id="date" [(ngModel)]="selectedCompetition.date">
           </div>
           <div class="mb-3">
             <label for="startTime" class="form-label">Start Time</label>
-            <input type="text" class="form-control" id="startTime" formControlName="startTime">
+            <input type="text" class="form-control" name="startTime" id="startTime" [(ngModel)]="selectedCompetition.startTime">
           </div>
           <div class="mb-3">
             <label for="endTime" class="form-label">End Time</label>
-            <input type="text" class="form-control" id="endTime" formControlName="endTime">
+            <input type="text" class="form-control" name="endTime" id="endTime" [(ngModel)]="selectedCompetition.endTime">
           </div>
           <div class="mb-3">
             <label for="location" class="form-label">Location</label>
-            <input type="text" class="form-control" id="location" formControlName="location">
+            <input type="text" class="form-control" name="location" id="location" [(ngModel)]="selectedCompetition.location">
           </div>
-          <button type="submit" class="btn btn-primary">Save changes</button>
+          <div class="modal-footer">
+            <button (click)="updateCompetition()" type="submit" class="btn btn-primary">Save changes</button>
+          </div>
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
