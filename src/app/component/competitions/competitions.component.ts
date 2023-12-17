@@ -4,7 +4,7 @@ import {CompetitionService} from "../../service/competition.service";
 import * as bootstrap from "bootstrap";
 import { catchError } from 'rxjs';
 import { IPage, Page } from 'src/app/models/pagination/page';
-import { Pageable } from 'src/app/models/pagination/pageable';
+import { IPageable, Pageable } from 'src/app/models/pagination/pageable';
 
 @Component({
   selector: 'app-competitions',
@@ -15,10 +15,10 @@ export class CompetitionsComponent {
   competitions: Competition[] = [];
   data: IPage<ICompetition> = new Page<ICompetition>();
   selectedCompetition: ICompetition = new Competition();
-  currentPage: Pageable | undefined = undefined;
+  currentPage: IPageable = new Pageable();
   pageFirst: boolean = false;
   pageLast: boolean = false;
-  pageSize: number = 2;
+  PAGESIZE: number = 2;
 
   isLoading = true;
   hasError = false;
@@ -46,22 +46,14 @@ export class CompetitionsComponent {
         this.hasError = false;
         this.competitions = data.content;
         this.currentPage = data.pageable;
-        this.pageFirst = data.first || false;
-        this.pageLast = data.last || false;
+        this.pageFirst = data.first;
+        this.pageLast = data.last;
         this.cdr.detectChanges();
       });
   }
 
-  nextPage(): void {
-    if (!this.pageLast && this.currentPage) {
-      this.loadPage(this.currentPage.pageNumber + 1, this.pageSize);
-    }
-  }
-
-  previousPage(): void {
-    if (!this.pageFirst && this.currentPage) {
-      this.loadPage(this.currentPage.pageNumber - 1, this.pageSize);
-    }
+  pageChange(number: number) {
+    this.loadPage(number, this.PAGESIZE);
   }
 
   openEditModal(competition: Competition): void {

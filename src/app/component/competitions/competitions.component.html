@@ -32,6 +32,14 @@
 </div>
 
 <div class="container mt-5">
+  <app-paginator 
+    [pageNumber]="currentPage.pageNumber" 
+    [pageFirst]="pageFirst"
+    [pageLast]="pageLast"
+    (pageChange)="pageChange($event)"></app-paginator>
+</div>
+
+<!-- <div class="container mt-5">
 <nav aria-label="Page navigation example">
   <ul class="pagination">
     <li class="page-item" [class.disabled]="pageFirst">
@@ -40,13 +48,13 @@
       </button>
     </li>
     <li *ngIf="!pageFirst" class="page-item">
-      <button (click)="previousPage()" class="page-link">{{ currentPage?.pageNumber ?? 1 }}</button>
+      <button (click)="previousPage()" class="page-link">{{ currentPage.pageNumber }}</button>
     </li>
     <li class="page-item active">
-      <button class="page-link">{{ (currentPage?.pageNumber ?? 1) + 1 }}</button>
+      <button class="page-link">{{ currentPage.pageNumber + 1 }}</button>
     </li>
     <li *ngIf="!pageLast" class="page-item">
-      <button (click)="nextPage()" class="page-link">{{ (currentPage?.pageNumber ?? 0) + 2 }}</button>
+      <button (click)="nextPage()" class="page-link">{{ currentPage.pageNumber + 2 }}</button>
     </li>
     <li class="page-item" [class.disabled]="pageLast">
       <button (click)="nextPage()" [disabled]="pageLast" class="page-link" href="#" aria-label="Next">
@@ -55,7 +63,7 @@
     </li>
   </ul>
 </nav>
-</div>
+</div> -->
 
 <!-- Edit Competition Modal -->
 <div class="modal fade" tabindex="-1" id="editCompetitionModal">

@@ -8,13 +8,13 @@ import { IPage, Page } from '../models/pagination/page';
   providedIn: 'root'
 })
 export class CompetitionService {
-  url: string = "http://localhost:8080/api/competition?size=2"
+  url: string = "http://localhost:8080/api/competition"
 
   constructor(private httpClient: HttpClient) {
   }
 
   getAll(page: number, size: number) {
-    const url = `${this.url}&page=${page}&size=${size}`;
+    const url = `${this.url}?page=${page}&size=${size}`;
     return this.httpClient.get<IPage<Competition>>(url);
   }
 

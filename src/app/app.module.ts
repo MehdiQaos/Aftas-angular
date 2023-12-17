@@ -8,13 +8,17 @@ import { NavbarComponent } from './component/navbar/navbar.component';
 import { CompetitionsComponent } from './component/competitions/competitions.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { CreateCompetitionComponent } from './component/create-competition/create-competition.component';
+import { PaginatorComponent } from './component/paginator/paginator.component';
+import { CompetitionDetailsComponent } from './component/competition-details/competition-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     CompetitionsComponent,
-    CreateCompetitionComponent
+    CreateCompetitionComponent,
+    PaginatorComponent,
+    CompetitionDetailsComponent
   ],
   imports: [
     BrowserModule,
