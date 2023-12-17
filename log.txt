@@ -1,0 +1,5 @@
+npm i bootstarp
+npm i @popperjs/core
+font awesome
+npm i ngx-toastr@16.2.0
+npm i @angular/animations

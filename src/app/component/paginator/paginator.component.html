@@ -1,21 +1,21 @@
 <nav aria-label="Page navigation example">
   <ul class="pagination">
     <li class="page-item" [class.disabled]="pageFirst">
-      <button (click)="previousPage()" [disabled]="pageFirst" class="page-link" href="#" aria-label="Previous">
+      <button (click)="previousPage()" [disabled]="pageFirst" class="page-link text-dark" href="#" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </button>
     </li>
     <li *ngIf="!pageFirst" class="page-item">
-      <button (click)="previousPage()" class="page-link">{{ pageNumber }}</button>
+      <button (click)="previousPage()" class="page-link text-dark">{{ pageNumber }}</button>
     </li>
-    <li class="page-item active">
-      <button class="page-link">{{ pageNumber + 1 }}</button>
+    <li class="page-item text-white">
+      <button class="page-link bg-dark text-white">{{ pageNumber + 1 }}</button>
     </li>
     <li *ngIf="!pageLast" class="page-item">
-      <button (click)="nextPage()" class="page-link">{{ pageNumber + 2 }}</button>
+      <button (click)="nextPage()" class="page-link text-dark">{{ pageNumber + 2 }}</button>
     </li>
     <li class="page-item" [class.disabled]="pageLast">
-      <button (click)="nextPage()" [disabled]="pageLast" class="page-link" href="#" aria-label="Next">
+      <button (click)="nextPage()" [disabled]="pageLast" class="page-link text-dark" href="#" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </button>
     </li>

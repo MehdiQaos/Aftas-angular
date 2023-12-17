@@ -25,7 +25,7 @@ import { CompetitionDetailsComponent } from './component/competition-details/com
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

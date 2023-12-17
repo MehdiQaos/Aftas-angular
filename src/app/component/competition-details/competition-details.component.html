@@ -1,21 +1,31 @@
 <div class="container mt-5">
-    <div class="card">
-        <div class="card-header">
-            <h2>{{ competition.code }}</h2>
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Date</h5>
-            <p class="card-text">{{ competition.date }}</p>
-            <h5 class="card-title">Start Time</h5>
-            <p class="card-text">{{ competition.startTime }}</p>
-            <h5 class="card-title">End Time</h5>
-            <p class="card-text">{{ competition.endTime }}</p>
-            <h5 class="card-title">Location</h5>
-            <p class="card-text">{{ competition.location }}</p>
-            <h5 class="card-title">Number of Participants</h5>
-            <p class="card-text">{{ competition.numberOfParticipants }}</p>
-            <h5 class="card-title">Amount</h5>
-            <p class="card-text">{{ competition.amount }}</p>
-        </div>
-    </div>
+    <h2>{{ competition.code }}</h2>
+    <table class="table table-striped mt-4">
+        <tbody>
+            <tr>
+                <th scope="row">Date</th>
+                <td>{{ competition.date }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Start Time</th>
+                <td>{{ competition.startTime }}</td>
+            </tr>
+            <tr>
+                <th scope="row">End Time</th>
+                <td>{{ competition.endTime }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Location</th>
+                <td>{{ competition.location }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Number of Participants</th>
+                <td>{{ competition.numberOfParticipants }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Amount</th>
+                <td>{{ competition.amount }} DH</td>
+            </tr>
+        </tbody>
+    </table>
 </div>

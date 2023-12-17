@@ -13,9 +13,17 @@ export class CompetitionService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getAll(page: number, size: number) {
+  getAll(page: number, size: number): Observable<IPage<Competition>> {
     const url = `${this.url}?page=${page}&size=${size}`;
     return this.httpClient.get<IPage<Competition>>(url);
+  }
+
+  getCompetition(id: number): Observable<Competition> {
+    return this.httpClient.get<Competition>(`${this.url}/${id}`);
+  }
+
+  createCompetition(competition: Competition): Observable<any> {
+    return this.httpClient.post(this.url, competition);
   }
 
   deleteCompetition(id: number): Observable<any> {

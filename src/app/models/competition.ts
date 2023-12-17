@@ -7,6 +7,7 @@ export interface ICompetition {
   endTime: string;
   location: string;
   amount: number;
+  status: 'COMPLETED' | 'ACTIVE' | 'REG_CLOSED' | 'COMING';
 }
 
 export class Competition implements ICompetition {
@@ -18,6 +19,7 @@ export class Competition implements ICompetition {
     public startTime: string = '',
     public endTime: string = '',
     public location: string = '',
-    public amount: number = 0
+    public amount: number = 0,
+    public status: 'COMPLETED' | 'ACTIVE' | 'REG_CLOSED' | 'COMING' = 'COMING'
   ) {}
 }

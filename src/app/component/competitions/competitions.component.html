@@ -1,4 +1,10 @@
 <div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center my-5">
+    <h1 class="text-dark">Competitions</h1>
+    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createCompetitionModal">
+      <i class="fas fa-plus"></i> New Competition
+    </button>
+  </div>
   <table class="table table-striped table-hover">
     <thead class="">
       <tr>
@@ -8,21 +14,30 @@
         <th scope="col">Start Time</th>
         <th scope="col">End Time</th>
         <th scope="col">Location</th>
+        <th scope="col">Status</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let competition of competitions">
         <th scope="row">{{competition.id}}</th>
-        <td>{{competition.code}}</td>
-        <td>{{competition.date}}</td>
-        <td>{{competition.startTime}}</td>
-        <td>{{competition.endTime}}</td>
-        <td>{{competition.location}}</td>
+        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{competition.code}}</a></td>
+        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{competition.date}}</a></td>
+        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{competition.startTime}}</a></td>
+        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{competition.endTime}}</a></td>
+        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{competition.location}}</a></td>
         <td>
-          <button class="btn btn-sm btn-success" (click)="openEditModal(competition)">
+          <span class="status-badge" [ngClass]="{
+            'badge-completed': competition.status === 'COMPLETED',
+            'badge-active': competition.status === 'ACTIVE',
+            'badge-registering': competition.status === 'REG_CLOSED',
+            'badge-coming': competition.status === 'COMING'
+          }">{{competition.status}}</span>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-outline-success me-1" (click)="openEditModal(competition)">
             <i class="fas fa-edit"></i>
           </button>
-          <button class="btn btn-sm btn-danger" (click)="deleteCompetition(competition.id)">
+          <button class="btn btn-sm btn-outline-danger" (click)="deleteCompetition(competition.id)">
             <i class="fas fa-trash"></i>
           </button>
         </td>
@@ -36,36 +51,12 @@
     [pageNumber]="currentPage.pageNumber" 
     [pageFirst]="pageFirst"
     [pageLast]="pageLast"
-    (pageChange)="pageChange($event)"></app-paginator>
+    (pageChange)="pageChange($event)">
+  </app-paginator>
 </div>
 
-<!-- <div class="container mt-5">
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item" [class.disabled]="pageFirst">
-      <button (click)="previousPage()" [disabled]="pageFirst" class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </button>
-    </li>
-    <li *ngIf="!pageFirst" class="page-item">
-      <button (click)="previousPage()" class="page-link">{{ currentPage.pageNumber }}</button>
-    </li>
-    <li class="page-item active">
-      <button class="page-link">{{ currentPage.pageNumber + 1 }}</button>
-    </li>
-    <li *ngIf="!pageLast" class="page-item">
-      <button (click)="nextPage()" class="page-link">{{ currentPage.pageNumber + 2 }}</button>
-    </li>
-    <li class="page-item" [class.disabled]="pageLast">
-      <button (click)="nextPage()" [disabled]="pageLast" class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </button>
-    </li>
-  </ul>
-</nav>
-</div> -->
-
 <!-- Edit Competition Modal -->
+<button id="openEditCompetitionModalButton" hidden type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCompetitionModal"></button>
 <div class="modal fade" tabindex="-1" id="editCompetitionModal">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -74,34 +65,26 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-<!--        <form [formGroup]="editCompetitionForm" (ngSubmit)="updateCompetition()">-->
         <form>
           <div class="mb-3">
-            <label for="id" class="form-label">ID</label>
-            <input type="number" class="form-control" name="id" id="id" [(ngModel)]="selectedCompetition.id">
-          </div>
-          <div class="mb-3">
-            <label for="code" class="form-label">Code</label>
-            <input type="text" class="form-control" name="code" id="code" [(ngModel)]="selectedCompetition.code">
-          </div>
-          <div class="mb-3">
             <label for="date" class="form-label">Date</label>
-            <input type="text" class="form-control" name="date" id="date" [(ngModel)]="selectedCompetition.date">
+            <input type="date" class="form-control" name="date" id="date" [(ngModel)]="selectedCompetition.date">
           </div>
           <div class="mb-3">
             <label for="startTime" class="form-label">Start Time</label>
-            <input type="text" class="form-control" name="startTime" id="startTime" [(ngModel)]="selectedCompetition.startTime">
+            <input type="time" class="form-control" name="startTime" id="startTime" [(ngModel)]="selectedCompetition.startTime">
           </div>
           <div class="mb-3">
             <label for="endTime" class="form-label">End Time</label>
-            <input type="text" class="form-control" name="endTime" id="endTime" [(ngModel)]="selectedCompetition.endTime">
+            <input type="time" class="form-control" name="endTime" id="endTime" [(ngModel)]="selectedCompetition.endTime">
           </div>
           <div class="mb-3">
             <label for="location" class="form-label">Location</label>
             <input type="text" class="form-control" name="location" id="location" [(ngModel)]="selectedCompetition.location">
           </div>
           <div class="modal-footer">
-            <button (click)="updateCompetition()" type="submit" class="btn btn-primary">Save changes</button>
+            <button (click)="updateCompetition()" type="submit" class="btn btn-success">Save changes</button>
+            <button id="closeEditModalButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </form>
       </div>
@@ -109,25 +92,42 @@
   </div>
 </div>
 
-<!-- Button trigger modal -->
-<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button> -->
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- create competition Modal -->
+<div class="modal fade" id="createCompetitionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <h1 class="modal-title fs-5" id="createCompetitionModalLabel">Modal title</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ...
+        <form>
+          <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" class="form-control" name="date" id="newdate" [(ngModel)]="newCompetition.date">
+          </div>
+          <div class="mb-3">
+            <label for="startTime" class="form-label">Start Time</label>
+            <input type="time" class="form-control" name="startTime" id="newstartTime" [(ngModel)]="newCompetition.startTime">
+          </div>
+          <div class="mb-3">
+            <label for="endTime" class="form-label">End Time</label>
+            <input type="time" class="form-control" name="endTime" id="newendTime" [(ngModel)]="newCompetition.endTime">
+          </div>
+          <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" class="form-control" name="location" id="newlocation" [(ngModel)]="newCompetition.location">
+          </div>
+          <div class="mb-3">
+            <label for="location" class="form-label">Amount</label>
+            <input type="number" class="form-control" name="amount" id="newamount" [(ngModel)]="newCompetition.amount">
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button (click)="createCompetition()" type="button" class="btn btn-success">Create</button>
+        <button type="button" id="closeCreateCompetitionModalButton" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

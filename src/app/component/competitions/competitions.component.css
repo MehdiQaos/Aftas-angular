@@ -1,3 +1,21 @@
-.greyout {
-    color: grey!important;
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 50px;
+    color: white;
+}
+
+.badge-completed {
+    background-color: rebeccapurple;
+}
+
+.badge-active {
+    background-color: greenyellow;
+}
+
+.badge-registering {
+    background-color: grey;
+}
+
+.badge-coming {
+    background-color: green;
 }
