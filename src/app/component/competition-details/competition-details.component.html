@@ -29,3 +29,37 @@
         </tbody>
     </table>
 </div>
+
+<div class="container mt-5">
+
+    <h2 *ngIf="competition.status === 'COMPLETED'">Podium</h2>
+    <h2 *ngIf="competition.status === 'ACTIVE'">Top members</h2>
+    <h2 *ngIf="!competitionActifOrCompleted()">Registred members</h2>
+    <ng-template #elseBlock>
+    </ng-template>
+
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Identity Number</th>
+                <th scope="col">Nationality</th>
+                <th *ngIf="competitionActifOrCompleted()" scope="col">Rank</th>
+                <th *ngIf="competitionActifOrCompleted()" scope="col">Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let member of members; index as i">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ member.firstName }}</td>
+                <td>{{ member.lastName }}</td>
+                <td>{{ member.identityNumber }}</td>
+                <td>{{ member.nationality }}</td>
+                <td *ngIf="competitionActifOrCompleted()">{{ member.rank }}</td>
+                <td *ngIf="competitionActifOrCompleted()">{{ member.score }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

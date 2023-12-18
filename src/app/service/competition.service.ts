@@ -1,21 +1,33 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Competition} from "../models/competition";
+import {Competition, ICompetition} from "../models/competition";
 import {Observable} from "rxjs";
 import { IPage, Page } from '../models/pagination/page';
+import { EnvService } from './env.service';
+import { IMember, Member } from '../models/member';
+import { IMemberRanking } from '../models/memberRanking';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompetitionService {
-  url: string = "http://localhost:8080/api/competition"
+  url: string;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private envService: EnvService
+  ) {
+    this.url = envService.ApiUrl + "/competition";
   }
 
   getAll(page: number, size: number): Observable<IPage<Competition>> {
     const url = `${this.url}?page=${page}&size=${size}`;
-    return this.httpClient.get<IPage<Competition>>(url);
+    return this.httpClient.get<IPage<ICompetition>>(url);
+  }
+
+  getMembersOfCompetition(id: number, page: number, size: number) {
+    const url = `${this.url}/${id}/members?page=${page}&size=${size}`;
+    return this.httpClient.get<IPage<IMemberRanking>>(url);
   }
 
   getCompetition(id: number): Observable<Competition> {

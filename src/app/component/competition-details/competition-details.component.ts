@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ICompetition } from 'src/app/models/competition';
+import { Competition, ICompetition } from 'src/app/models/competition';
+import { IdentityDocumentType } from 'src/app/models/member';
+import { IMemberRanking } from 'src/app/models/memberRanking';
 import { CompetitionService } from 'src/app/service/competition.service';
 
 @Component({
@@ -9,32 +11,40 @@ import { CompetitionService } from 'src/app/service/competition.service';
   styleUrls: ['./competition-details.component.css']
 })
 export class CompetitionDetailsComponent {
+  competition: ICompetition = new Competition;
+  members: IMemberRanking[] = [];
+  id: number = 0;
+
   constructor(
     private competitionService: CompetitionService,
     private route: ActivatedRoute,
   ) {}
 
-  id: number = 0;
-
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.loadCompetition(this.id);
+    this.loadCompetition();
+    this.loadMembers();
   }
 
-  loadCompetition(id: number): void {
-    this.competitionService.getCompetition(id).subscribe((data: ICompetition) => {
+  competitionActifOrCompleted() {
+    return this.competition.status === 'COMPLETED' || this.competition.status === 'ACTIVE';
+  }
+
+  loadCompetition(): void {
+    this.competitionService.getCompetition(this.id).subscribe((data: ICompetition) => {
       this.competition = data;
     });
   }
-  competition: ICompetition = {
-    id: 0,
-    code: 'Competition Code',
-    date: '2022-01-01',
-    numberOfParticipants: 100,
-    startTime: '10:00',
-    endTime: '18:00',
-    location: 'Competition Location',
-    amount: 1000,
-    status: 'COMING',
-  };
+
+  loadMembers() {
+    this.competitionService.getMembersOfCompetition(this.id, 0, 30).subscribe((data) => {
+      this.members = data.content;
+      if (this.competitionActifOrCompleted()) {
+        this.members.sort((a, b) => b.score - a.score);
+      }
+      if (this.competition.status === 'COMPLETED') {
+        this.members = this.members.slice(0, 3);
+      }
+    });
+  }
 }
