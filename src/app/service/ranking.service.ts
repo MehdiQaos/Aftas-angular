@@ -1,15 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EnvService } from './env.service';
-import { IMember } from '../models/member';
-import { ICompetition } from '../models/competition';
+import { IRankingMember } from '../models/rankingMember';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MemberService {
+export class RankingService {
   url: string;
-  uri: string = "/member";
+  uri: string = "/ranking";
 
   constructor(
     private httpClient: HttpClient,
@@ -18,9 +17,7 @@ export class MemberService {
     this.url = envService.ApiUrl + this.uri;
   }
 
-  searchMembers(searchTerm: string) {
-    const url = `${this.url}/search/${searchTerm}`;
-    console.log(url);
-    return this.httpClient.get<IMember[]>(url);
+  getAllByCompetitionId(id: number) {
+    return this.httpClient.get<IRankingMember[]>(`${this.url}/${id}`);
   }
 }

@@ -32,11 +32,17 @@
 
 <div class="container mt-5">
 
-    <h2 *ngIf="competition.status === 'COMPLETED'">Podium</h2>
-    <h2 *ngIf="competition.status === 'ACTIVE'">Top members</h2>
-    <h2 *ngIf="!competitionActifOrCompleted()">Registred members</h2>
-    <ng-template #elseBlock>
-    </ng-template>
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 *ngIf="competition.status === 'COMPLETED'">Podium</h2>
+        <h2 *ngIf="competition.status === 'ACTIVE'">Top members</h2>
+        <h2 *ngIf="!competitionActifOrCompleted()">Registred members</h2>
+    <button *ngIf="competition.status === 'COMING'" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#regiterMemberModal">
+        <i class="fas fa-plus"></i> New
+    </button>
+    <button *ngIf="competition.status === 'ACTIVE'" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#newHuntModal">
+        <i class="fas fa-plus"></i> New Hunt
+    </button>
+    </div>
 
     <table class="table table-striped mt-4">
         <thead>
@@ -62,4 +68,65 @@
             </tr>
         </tbody>
     </table>
+</div>
+
+<!-- new member Modal -->
+<div class="modal fade" id="regiterMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="createCompetitionModalLabel">Register member</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="modal-body">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search by id, first name, or last name" [(ngModel)]="searchTerm">
+                <button (click)="searchMembers()" class="btn btn-primary" type="button">Search</button>
+            </div>
+            <select class="form-select" [(ngModel)]="selectedMember">
+                <option *ngFor="let member of searchedMembers" [ngValue]="member">
+                    {{ member.id }} - {{ member.firstName }} {{ member.lastName }}
+                </option>
+            </select>
+        </div>
+      <div class="modal-footer">
+        <button (click)="registerMember()" type="button" class="btn btn-success">Register</button>
+        <button type="button" id="closeMemberModalButton" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- new hunt Modal -->
+<div class="modal fade" id="newHuntModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="createCompetitionModalLabel">Add hunt</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="modal-body">
+            <div class="mb-3">
+                <label for="memberSelect" class="form-label">Select member</label>
+                <select class="form-select" id="memberSelect" [(ngModel)]="selectedRanking">
+                    <option *ngFor="let ranking of rankingMembers" [ngValue]="ranking">{{ ranking.memberId }} : {{ ranking.firstName + " " }} + {{ ranking.lastName }}</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="fishWeight" class="form-label">Fish Weight</label>
+                <input type="number" class="form-control" id="fishWeight" [(ngModel)]="fishWeight">
+            </div>
+            <div class="mb-3">
+                <label for="fishSelect" class="form-label">Select Fish</label>
+                <select class="form-select" id="fishSelect" [(ngModel)]="selectedFish">
+                    <option *ngFor="let fish of fishes" [ngValue]="fish">{{ fish.name }}</option>
+                </select>
+            </div>
+        </div>
+      <div class="modal-footer">
+        <button (click)="addHunt()" type="button" class="btn btn-success">Register</button>
+        <button type="button" id="closeHuntModalButton" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>

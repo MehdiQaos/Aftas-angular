@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EnvService } from './env.service';
-import { IMember } from '../models/member';
-import { ICompetition } from '../models/competition';
+import { IFish } from '../models/fish';
+import { Page } from '../models/pagination/page';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MemberService {
+export class FishService {
   url: string;
-  uri: string = "/member";
+  uri: string = "/fish";
 
   constructor(
     private httpClient: HttpClient,
@@ -18,9 +18,7 @@ export class MemberService {
     this.url = envService.ApiUrl + this.uri;
   }
 
-  searchMembers(searchTerm: string) {
-    const url = `${this.url}/search/${searchTerm}`;
-    console.log(url);
-    return this.httpClient.get<IMember[]>(url);
+  getAll() {
+    return this.httpClient.get<Page<IFish>>(this.url);
   }
 }

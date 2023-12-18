@@ -45,4 +45,9 @@ export class CompetitionService {
   updateCompetition(competition: Competition): Observable<any> {
     return this.httpClient.put(`${this.url}/${competition.id}`, competition);
   }
+
+  registerMember(member: IMember, competition: ICompetition) {
+    const url = `${this.url}/${competition.id}/${member.id}`
+    return this.httpClient.get(url);
+  }
 }
