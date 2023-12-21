@@ -1,11 +1,10 @@
-import {Component, ChangeDetectorRef } from '@angular/core';
-import {Competition, ICompetition} from "../../models/competition";
-import {CompetitionService} from "../../service/competition.service";
-// import * as bootstrap from "bootstrap";
-import { catchError } from 'rxjs';
+import { Component } from '@angular/core';
+import { Competition, ICompetition } from "../../models/competition";
+import { CompetitionService } from "../../service/competition.service";
 import { IPage, Page } from 'src/app/models/pagination/page';
 import { IPageable, Pageable } from 'src/app/models/pagination/pageable';
 import Swal from 'sweetalert2';
+import {IErrors} from "../../models/errors";
 
 @Component({
   selector: 'app-competitions',
@@ -20,30 +19,37 @@ export class CompetitionsComponent {
   currentPage: IPageable = new Pageable();
   pageFirst: boolean = false;
   pageLast: boolean = false;
-  PAGESIZE: number = 2;
+  pageSize: number = 2;
+  filter: string = "ALL";
+  pageNumber: number = 0;
+  errors: IErrors = {};
 
   constructor(
     private competitionService: CompetitionService,
-    private cdr: ChangeDetectorRef,
-  ) {}
-
-  ngOnInit(): void {
-    this.loadPage(0, 2);
+  ) {
   }
 
-  loadPage(page: number, size: number): void {
-    this.competitionService.getAll(page, size)
+  ngOnInit(): void {
+    this.loadPage(this.pageNumber, this.pageSize, this.filter);
+  }
+
+  loadPage(page: number, size: number, filter: string): void {
+    this.competitionService.getAll(page, size, filter)
       .subscribe((data: IPage<Competition>) => {
         this.competitions = data.content;
         this.currentPage = data.pageable;
         this.pageFirst = data.first;
         this.pageLast = data.last;
-        this.cdr.detectChanges();
+        this.pageNumber = page;
       });
   }
 
+  filterCompetitions() {
+    this.loadPage(this.pageNumber, this.pageSize, this.filter);
+  }
+
   pageChange(number: number) {
-    this.loadPage(number, this.PAGESIZE);
+    this.loadPage(number, this.pageSize, this.filter);
   }
 
   openEditModal(competition: Competition): void {
@@ -53,74 +59,62 @@ export class CompetitionsComponent {
   }
 
   updateCompetition(): void {
-    if (this.selectedCompetition) {
-      this.competitionService.updateCompetition(this.selectedCompetition).subscribe(() => {
-        this.competitions = this.competitions.map(competition =>
-          competition.id === this.selectedCompetition.id ? this.selectedCompetition : competition
-        );
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Competition updated successfully',
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }, error => {
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Competition could not be updated',
-          showConfirmButton: false,
-          timer: 1500
-        });
+    if (!this.selectedCompetition) return;
+
+    this.competitionService.updateCompetition(this.selectedCompetition).subscribe({
+        next: () => {
+          this.competitions = this.competitions.map(competition =>
+            competition.id === this.selectedCompetition.id ? this.selectedCompetition : competition
+          );
+          Swal.fire({ position: 'center', icon: 'success', title: 'Competition updated successfully', showConfirmButton: false, timer: 1500 });
+          this.errors = {};
+          this.closeEditModal();
+        },
+        error: error => {
+          console.log(error);
+          Swal.fire({ position: 'center', icon: 'error', title: 'Competition could not be updated', showConfirmButton: false, timer: 1500 });
+          this.errors = error.error.errors;
+        }
       });
-    }
-    const button = document.getElementById('closeEditCompetitionModalButton');
-    button?.click();
   }
 
   deleteCompetition(id: number): void {
-    this.competitionService.deleteCompetition(id).subscribe(() => {
-      this.competitions = this.competitions.filter(competition => competition.id !== id);
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Competition deleted successfully',
-        showConfirmButton: false,
-        timer: 1500
-      });
-    }, error => {
-      Swal.fire({
-        position: 'center',
-        icon: 'error',
-        title: 'Competition could not be deleted',
-        showConfirmButton: false,
-        timer: 1500
-      });
+    this.competitionService.deleteCompetition(id).subscribe({
+      next: () => {
+        this.competitions = this.competitions.filter(competition => competition.id !== id);
+        Swal.fire({ position: 'center', icon: 'success', title: 'Competition deleted successfully', showConfirmButton: false, timer: 1500 });
+      },
+      error: error => {
+        Swal.fire({ position: 'center', icon: 'error', title: 'Competition could not be deleted', showConfirmButton: false, timer: 1500 });
+      }
     });
   }
 
   createCompetition(): void {
-    this.competitionService.createCompetition(this.newCompetition).subscribe(() => {
-      this.loadPage(this.currentPage.pageNumber, this.PAGESIZE);
-      this.newCompetition = new Competition();
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Competition created successfully',
-        showConfirmButton: false,
-        timer: 1500
-      });
-    }, error => {
-      Swal.fire({
-        position: 'center',
-        icon: 'error',
-        title: 'Competition could not be created',
-        showConfirmButton: false,
-        timer: 1500
-      });
-    });
+    this.competitionService.createCompetition(this.newCompetition).subscribe(
+      {
+        next: () => {
+          this.loadPage(this.currentPage.pageNumber, this.pageSize, this.filter);
+          this.newCompetition = new Competition();
+          Swal.fire({ position: 'center', icon: 'success', title: 'Competition created successfully', showConfirmButton: false, timer: 1500 });
+          this.errors = {};
+          this.closeCreateModal();
+        }, error: error => {
+          console.log(error);
+          Swal.fire({ position: 'center', icon: 'error', title: 'Competition could not be created', showConfirmButton: false, timer: 1500 });
+          this.errors = error.error.errors;
+        }
+      }
+    );
+  }
+
+  closeCreateModal(): void {
     const button = document.getElementById('closeCreateCompetitionModalButton');
+    button?.click();
+  }
+
+  closeEditModal(): void {
+    const button = document.getElementById('closeEditCompetitionModalButton');
     button?.click();
   }
 }

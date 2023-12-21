@@ -20,8 +20,8 @@ export class CompetitionService {
     this.url = envService.ApiUrl + "/competition";
   }
 
-  getAll(page: number, size: number): Observable<IPage<Competition>> {
-    const url = `${this.url}?page=${page}&size=${size}`;
+  getAll(page: number, size: number, filter: string): Observable<IPage<Competition>> {
+    const url = `${this.url}?page=${page}&size=${size}&filter=${filter}`;
     return this.httpClient.get<IPage<ICompetition>>(url);
   }
 

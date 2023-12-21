@@ -10,6 +10,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { CreateCompetitionComponent } from './component/create-competition/create-competition.component';
 import { PaginatorComponent } from './component/paginator/paginator.component';
 import { CompetitionDetailsComponent } from './component/competition-details/competition-details.component';
+import { FishesComponent } from './component/fishes/fishes.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { CompetitionDetailsComponent } from './component/competition-details/com
     CompetitionsComponent,
     CreateCompetitionComponent,
     PaginatorComponent,
-    CompetitionDetailsComponent
+    CompetitionDetailsComponent,
+    FishesComponent
   ],
   imports: [
     BrowserModule,

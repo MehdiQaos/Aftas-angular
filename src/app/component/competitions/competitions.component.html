@@ -1,6 +1,16 @@
 <div class="container mt-5">
   <div class="d-flex justify-content-between align-items-center my-5">
     <h1 class="text-dark">Competitions</h1>
+    <div class="d-flex justify-content-between align-items-center my-5">
+      <div>
+          <select class="form-select me-2" [(ngModel)]="filter" (change)="filterCompetitions()">
+            <option value="ALL">All</option>
+            <option value="COMPLETED">Completed</option>
+            <option value="ACTIVE">Active</option>
+            <option value="COMING">Coming</option>
+        </select>
+      </div>
+    </div>
     <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createCompetitionModal">
       <i class="fas fa-plus"></i> New Competition
     </button>
@@ -15,16 +25,17 @@
         <th scope="col">End Time</th>
         <th scope="col">Location</th>
         <th scope="col">Status</th>
+        <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let competition of competitions">
         <th scope="row">{{competition.id}}</th>
-        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{competition.code}}</a></td>
-        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{competition.date}}</a></td>
-        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{competition.startTime}}</a></td>
-        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{competition.endTime}}</a></td>
-        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{competition.location}}</a></td>
+        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{ competition.code }}</a></td>
+        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{ competition.date }}</a></td>
+        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{ competition.startTime }}</a></td>
+        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{ competition.endTime }}</a></td>
+        <td><a class="text-decoration-none text-dark" [routerLink]="['/competitions', competition.id]">{{ competition.location }}</a></td>
         <td>
           <span class="status-badge" [ngClass]="{
             'badge-completed': competition.status === 'COMPLETED',
@@ -47,12 +58,22 @@
 </div>
 
 <div class="container mt-5">
-  <app-paginator 
-    [pageNumber]="currentPage.pageNumber" 
-    [pageFirst]="pageFirst"
-    [pageLast]="pageLast"
-    (pageChange)="pageChange($event)">
-  </app-paginator>
+  <div class="d-flex justify-content-between align-items-center my-5">
+    <app-paginator
+      [pageNumber]="currentPage.pageNumber"
+      [pageFirst]="pageFirst"
+      [pageLast]="pageLast"
+      (pageChange)="pageChange($event)">
+    </app-paginator>
+    <div>
+      <select class="form-select me-2" [(ngModel)]="pageSize" (change)="loadPage(0, pageSize, filter)">
+        <option value="2">2</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+      </select>
+    </div>
+  </div>
 </div>
 
 <!-- Edit Competition Modal -->
@@ -69,18 +90,28 @@
           <div class="mb-3">
             <label for="date" class="form-label">Date</label>
             <input type="date" class="form-control" name="date" id="date" [(ngModel)]="selectedCompetition.date">
+            <span class="text-danger" *ngIf="errors['date']">{{ errors['date'] }}</span>
           </div>
           <div class="mb-3">
             <label for="startTime" class="form-label">Start Time</label>
             <input type="time" class="form-control" name="startTime" id="startTime" [(ngModel)]="selectedCompetition.startTime">
+            <span class="text-danger" *ngIf="errors['startTime']">{{ errors['startTime'] }}</span>
+            <span class="text-danger" *ngIf="errors['time']">{{ errors['time'] }}</span>
           </div>
           <div class="mb-3">
             <label for="endTime" class="form-label">End Time</label>
             <input type="time" class="form-control" name="endTime" id="endTime" [(ngModel)]="selectedCompetition.endTime">
+            <span class="text-danger" *ngIf="errors['endTime']">{{ errors['endTime'] }}</span>
           </div>
           <div class="mb-3">
             <label for="location" class="form-label">Location</label>
             <input type="text" class="form-control" name="location" id="location" [(ngModel)]="selectedCompetition.location">
+            <span class="text-danger" *ngIf="errors['location']">{{ errors['location'] }}</span>
+          </div>
+          <div class="mb-3">
+            <label for="location" class="form-label">Amount</label>
+            <input type="number" class="form-control" name="amount" id="amount" [(ngModel)]="selectedCompetition.amount">
+            <span class="text-danger" *ngIf="errors['amount']">{{ errors['amount'] }}</span>
           </div>
           <div class="modal-footer">
             <button (click)="updateCompetition()" type="submit" class="btn btn-success">Save changes</button>
@@ -106,22 +137,28 @@
           <div class="mb-3">
             <label for="date" class="form-label">Date</label>
             <input type="date" class="form-control" name="date" id="newdate" [(ngModel)]="newCompetition.date">
+            <span class="text-danger" *ngIf="errors['date']">{{ errors['date'] }}</span>
           </div>
           <div class="mb-3">
             <label for="startTime" class="form-label">Start Time</label>
             <input type="time" class="form-control" name="startTime" id="newstartTime" [(ngModel)]="newCompetition.startTime">
+            <span class="text-danger" *ngIf="errors['startTime']">{{ errors['startTime'] }}</span>
           </div>
           <div class="mb-3">
             <label for="endTime" class="form-label">End Time</label>
             <input type="time" class="form-control" name="endTime" id="newendTime" [(ngModel)]="newCompetition.endTime">
+            <span class="text-danger" *ngIf="errors['endTime']">{{ errors['endTime'] }}</span>
+            <span class="text-danger" *ngIf="errors['time']">{{ errors['time'] }}</span>
           </div>
           <div class="mb-3">
             <label for="location" class="form-label">Location</label>
             <input type="text" class="form-control" name="location" id="newlocation" [(ngModel)]="newCompetition.location">
+            <span class="text-danger" *ngIf="errors['location']">{{ errors['location'] }}</span>
           </div>
           <div class="mb-3">
             <label for="location" class="form-label">Amount</label>
             <input type="number" class="form-control" name="amount" id="newamount" [(ngModel)]="newCompetition.amount">
+            <span class="text-danger" *ngIf="errors['amount']">{{ errors['amount'] }}</span>
           </div>
         </form>
       </div>

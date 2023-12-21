@@ -21,4 +21,8 @@ export class FishService {
   getAll() {
     return this.httpClient.get<Page<IFish>>(this.url);
   }
+
+  get(id: number) {
+    return this.httpClient.get<IFish>(this.url + '/' + id);
+  }
 }
