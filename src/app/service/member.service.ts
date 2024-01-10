@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EnvService } from './env.service';
-import { IMember } from '../models/member';
-import { ICompetition } from '../models/competition';
+import {IMember, Member} from '../models/member';
+import {Competition, ICompetition} from '../models/competition';
+import {Observable} from "rxjs";
+import {IPage} from "../models/pagination/page";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,19 @@ export class MemberService {
     private envService: EnvService
   ) {
     this.url = envService.ApiUrl + this.uri;
+  }
+
+  getAll(page: number, size: number): Observable<IPage<IMember>> {
+    const url = `${this.url}?page=${page}&size=${size}`;
+    return this.httpClient.get<IPage<IMember>>(url);
+  }
+
+  getMember(id: number): Observable<IMember> {
+    return this.httpClient.get<IMember>(`${this.url}/${id}`);
+  }
+
+  createMember(member: IMember): Observable<any> {
+    return this.httpClient.post(this.url, member);
   }
 
   searchMembers(searchTerm: string) {

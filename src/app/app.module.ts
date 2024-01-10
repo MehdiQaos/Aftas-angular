@@ -11,6 +11,7 @@ import { CreateCompetitionComponent } from './component/create-competition/creat
 import { PaginatorComponent } from './component/paginator/paginator.component';
 import { CompetitionDetailsComponent } from './component/competition-details/competition-details.component';
 import { FishesComponent } from './component/fishes/fishes.component';
+import { MembersComponent } from './component/members/members.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FishesComponent } from './component/fishes/fishes.component';
     CreateCompetitionComponent,
     PaginatorComponent,
     CompetitionDetailsComponent,
-    FishesComponent
+    FishesComponent,
+    MembersComponent
   ],
   imports: [
     BrowserModule,

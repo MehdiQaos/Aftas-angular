@@ -1,0 +1,100 @@
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center my-5">
+    <h1 class="text-dark">Members</h1>
+    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createMemberModal">
+      <i class="fas fa-plus"></i> New Member
+    </button>
+  </div>
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First name</th>
+        <th scope="col">Last name</th>
+        <th scope="col">Identity number</th>
+        <th scope="col">Nationality</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let member of members; let i = index">
+        <th scope="row">{{i + 1}}</th>
+        <td>{{member.firstName}}</td>
+        <td>{{member.lastName}}</td>
+        <td>{{member.identityNumber}}</td>
+        <td>{{member.nationality}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center my-5">
+    <app-paginator
+      [pageNumber]="currentPage.pageNumber"
+      [pageFirst]="pageFirst"
+      [pageLast]="pageLast"
+      (pageChange)="pageChange($event)">
+    </app-paginator>
+    <div>
+      <select class="form-select me-2" [(ngModel)]="pageSize" (change)="loadMembers(0, pageSize)">
+        <option value="2">2</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Create Member Modal -->
+<div class="modal fade" id="createMemberModal" tabindex="-1" aria-labelledby="createMemberModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createMemberModalLabel">New Member</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="newMember.firstName">
+            <span class="text-danger" *ngIf="errors['firstName']">{{ errors['firstName'] }}</span>
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="newMember.lastName">
+            <span class="text-danger" *ngIf="errors['lastName']">{{ errors['lastName'] }}</span>
+          </div>
+          <div class="mb-3">
+            <label for="identityNumber" class="form-label">Identity Number</label>
+            <input type="text" class="form-control" id="identityNumber" name="identityNumber" [(ngModel)]="newMember.identityNumber">
+            <span class="text-danger" *ngIf="errors['identityNumber']">{{ errors['identityNumber'] }}</span>
+          </div>
+          <div class="mb-3">
+            <label for="identityDocumentTypeId" class="form-label">Identity type</label>
+            <select class="form-select me-2" id="identityDocumentTypeId" name="identityDocumentTypeId" [(ngModel)]="newMember.identityDocumentTypeId">
+              <option value="0">CIN</option>
+              <option value="1">CARTE_RESIDENCE</option>
+              <option value="2">PASSPORT</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="nationality" class="form-label">Nationality</label>
+            <input type="text" class="form-control" id="nationality" name="nationality" [(ngModel)]="newMember.nationality">
+            <span class="text-danger" *ngIf="errors['nationality']">{{ errors['nationality'] }}</span>
+          </div>
+          <div class="mb-3">
+            <label for="birthDate" class="form-label">Birth Date</label>
+            <input type="date" class="form-control" id="birthDate" name="birthDate" [(ngModel)]="newMember.birthDate">
+            <span class="text-danger" *ngIf="errors['birthDate']">{{ errors['birthDate'] }}</span>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button (click)="createMember()" type="button" class="btn btn-success">Create</button>
+        <button type="button" id="closeCreateMemberModalButton" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

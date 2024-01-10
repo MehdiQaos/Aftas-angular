@@ -66,9 +66,11 @@ export class CompetitionsComponent {
           this.competitions = this.competitions.map(competition =>
             competition.id === this.selectedCompetition.id ? this.selectedCompetition : competition
           );
-          Swal.fire({ position: 'center', icon: 'success', title: 'Competition updated successfully', showConfirmButton: false, timer: 1500 });
-          this.errors = {};
-          this.closeEditModal();
+          Swal.fire({ position: 'center', icon: 'success', title: 'Competition updated successfully', showConfirmButton: false, timer: 1500 })
+            .then(() => {
+              this.errors = {};
+              this.closeEditModal();
+            });
         },
         error: error => {
           console.log(error);
@@ -96,13 +98,17 @@ export class CompetitionsComponent {
         next: () => {
           this.loadPage(this.currentPage.pageNumber, this.pageSize, this.filter);
           this.newCompetition = new Competition();
-          Swal.fire({ position: 'center', icon: 'success', title: 'Competition created successfully', showConfirmButton: false, timer: 1500 });
-          this.errors = {};
-          this.closeCreateModal();
+          Swal.fire({ position: 'center', icon: 'success', title: 'Competition created successfully', showConfirmButton: false, timer: 1500 })
+            .then(() => {
+              this.errors = {};
+              this.closeCreateModal();
+            });
         }, error: error => {
           console.log(error);
-          Swal.fire({ position: 'center', icon: 'error', title: 'Competition could not be created', showConfirmButton: false, timer: 1500 });
-          this.errors = error.error.errors;
+          Swal.fire({ position: 'center', icon: 'error', title: 'Competition could not be created', showConfirmButton: false, timer: 1500 })
+            .then(() => {
+              this.errors = error.error.errors;
+            });
         }
       }
     );

@@ -5,4 +5,9 @@ export interface IErrors {
   time?: string;
   location?: string;
   amount?: string;
+  firstName?: string;
+  lastName?: string;
+  identityNumber?: string;
+  nationality?: string;
+  birthDate?: string;
 }
