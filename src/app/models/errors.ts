@@ -7,6 +7,7 @@ export interface IErrors {
   amount?: string;
   firstName?: string;
   lastName?: string;
+  email?: string;
   identityNumber?: string;
   nationality?: string;
   birthDate?: string;

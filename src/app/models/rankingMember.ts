@@ -4,6 +4,7 @@ export interface IRankingMember {
     competitionId: number;
     firstName: string;
     lastName: string;
+    email: string;
 }
 
 export class RankingMember implements IRankingMember {
@@ -12,6 +13,7 @@ export class RankingMember implements IRankingMember {
         public memberId: number = 0,
         public competitionId: number = 0,
         public firstName: string = '',
-        public lastName: string = ''
+        public lastName: string = '',
+        public email: string = ''
     ) {}
 }

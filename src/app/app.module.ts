@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +12,10 @@ import { PaginatorComponent } from './component/paginator/paginator.component';
 import { CompetitionDetailsComponent } from './component/competition-details/competition-details.component';
 import { FishesComponent } from './component/fishes/fishes.component';
 import { MembersComponent } from './component/members/members.component';
+import { LoginComponent } from './component/login/login.component';
+import { CustomInterceptor } from './interceptor/custom.interceptor';
+import { RegisterComponent } from './component/register/register.component';
+import { HandleErrorInterceptor } from './interceptor/handle-error.interceptor';
 
 @NgModule({
   declarations: [
@@ -22,7 +26,9 @@ import { MembersComponent } from './component/members/members.component';
     PaginatorComponent,
     CompetitionDetailsComponent,
     FishesComponent,
-    MembersComponent
+    MembersComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +37,10 @@ import { MembersComponent } from './component/members/members.component';
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HandleErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

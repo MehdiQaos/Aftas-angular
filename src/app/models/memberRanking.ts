@@ -4,6 +4,7 @@ export interface IMemberRanking {
     id: number;
     firstName: string;
     lastName: string;
+    email: string;
     identityNumber: string;
     nationality: string;
     birthDate: Date;
@@ -18,6 +19,7 @@ export class MemberRanking implements IMemberRanking {
         public id: number = 0,
         public firstName: string = '',
         public lastName: string = '',
+        public email: string = '',
         public identityNumber: string = '',
         public nationality: string = '',
         public birthDate: Date = new Date(),

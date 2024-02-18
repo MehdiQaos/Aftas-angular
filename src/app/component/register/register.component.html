@@ -1,0 +1,30 @@
+<div class="container d-flex justify-content-center align-items-center">
+    <form class="col-6 my-5">
+        <h2 class="text-center mb-4">Register</h2>
+        <div class="mb-3">
+            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" [(ngModel)]="form.firstName">
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" [(ngModel)]="form.lastName">
+        </div>
+        <div class="mb-3">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="form.email">
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" id="nationality" name="nationality" placeholder="Nationality" [(ngModel)]="form.nationality">
+        </div>
+        <div class="mb-3">
+            <input type="date" class="form-control" id="birthDate" name="birthDate" placeholder="Birth Date-05-15" [(ngModel)]="form.birthDate">
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" id="identityNumber" name="identityNumber" placeholder="Identity Number" [(ngModel)]="form.identityNumber">
+        </div>
+        <div class="mb-3">
+            <input type="number" class="form-control" id="identityDocumentTypeId" name="identityDocumentTypeId" placeholder="Identity Document Type ID" [(ngModel)]="form.identityDocumentTypeId">
+        </div>
+        <div class="mb-3">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" [(ngModel)]="form.password">
+        </div>
+        <button (click)="onSubmit()" type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

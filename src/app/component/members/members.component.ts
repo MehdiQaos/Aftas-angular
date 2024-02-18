@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import {MemberService} from "../../service/member.service";
-import {IMember, Member} from "../../models/member";
-import {IPage, Page} from "../../models/pagination/page";
-import {IPageable, Pageable} from "../../models/pagination/pageable";
-import {IErrors} from "../../models/errors";
+import { MemberService } from "../../service/member.service";
+import { IMember, Member } from "../../models/member";
+import { IPage, Page } from "../../models/pagination/page";
+import { IPageable, Pageable } from "../../models/pagination/pageable";
+import { IErrors } from "../../models/errors";
 import Swal from "sweetalert2";
 
 @Component({
