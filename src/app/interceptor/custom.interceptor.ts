@@ -6,17 +6,16 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { StoreService } from '../service/store.service';
 
 @Injectable()
 export class CustomInterceptor implements HttpInterceptor {
 
-  constructor() {}
+  constructor(private store: StoreService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    console.log("intercepted request ... " + request.url);
-    console.log(request);
-    const accessToken = localStorage.getItem('accessToken');
-    const refreshToken = localStorage.getItem('refreshToken');
+    const accessToken = this.store.getAccessToken();
+    const refreshToken = this.store.getRefreshToken();
 
     if (accessToken) {
       const cloned = request.clone(

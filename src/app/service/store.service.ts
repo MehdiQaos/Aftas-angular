@@ -1,17 +1,23 @@
 import { Injectable } from '@angular/core';
+import { IMember } from '../models/member';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StoreService {
-  private user: string | null = null;
+  private user: IMember | null = null;
+  private accessToken: string | null = null;
+  private refreshToken: string | null = null;
+  private authorities: string[] = [];
+  private authenticated: boolean = false;
+
   constructor() { }
 
   getUser() {
     return this.user;
   }
 
-  setUser(user: string) {
+  setUser(user: IMember | null) {
     this.user = user;
   }
 
@@ -19,14 +25,35 @@ export class StoreService {
     this.user = null;
   }
 
-  isLoggedIn() {
-    return this.user !== null;
+  getAuthorities() {
+    return this.authorities;
   }
 
-  getUserFromToken(token: string) {
-    const payload = token.split('.')[1];
-    const decodedPayload = atob(payload);
-    const user = JSON.parse(decodedPayload);
-    return user.sub;
+  setAuthorities(authorities: string[]) {
+    this.authorities = authorities;
+  }
+
+  getAccessToken() {
+    return this.accessToken;
+  }
+
+  setAccessToken(token: string | null) {
+    this.accessToken = token;
+  }
+
+  getRefreshToken() {
+    return this.refreshToken;
+  }
+
+  setRefreshToken(token: string | null) {
+    this.refreshToken = token;
+  }
+
+  isAuthenticated() {
+    return this.authenticated;
+  }
+
+  setAuthenticated(val: boolean) {
+    this.authenticated = val;
   }
 }

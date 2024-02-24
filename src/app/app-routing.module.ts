@@ -5,13 +5,15 @@ import { CompetitionDetailsComponent } from "./component/competition-details/com
 import { MembersComponent } from "./component/members/members.component";
 import { LoginComponent } from './component/login/login.component';
 import { RegisterComponent } from './component/register/register.component';
+import { AuthGuard } from './guard/auth.guard';
+import { IsAdminGuard } from './guard/is-admin.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'competitions', component: CompetitionsComponent },
-  { path: 'competitions/:id', component: CompetitionDetailsComponent },
-  { path: 'members', component: MembersComponent },
+  { path: 'competitions', component: CompetitionsComponent, canActivate: [AuthGuard] },
+  { path: 'competitions/:id', component: CompetitionDetailsComponent, canActivate: [AuthGuard] },
+  { path: 'members', component: MembersComponent, canActivate: [AuthGuard, IsAdminGuard] },
   { path: '**', redirectTo: 'competitions' }
 ];
 
