@@ -1,31 +1,15 @@
 <div class="container d-flex justify-content-center align-items-center">
-    <form class="col-6 my-5">
+    <form [formGroup]="form" (submit)="submit()" class="col-6 my-5">
         <h2 class="text-center mb-4">Login</h2>
-        <div class="mb-3">
-            <input type="email" name="email" class="form-control" id="email" placeholder="Email" [(ngModel)]="form.email">
+        <div *ngIf="error" class="alert alert-danger">
+            Wrong credentials or account disabled.
         </div>
         <div class="mb-3">
-            <input type="password" name="password" class="form-control" id="password" placeholder="Password" [(ngModel)]="form.password">
+            <input type="email" formControlName="email" class="form-control" placeholder="Email">
         </div>
-        <button (click)="auth.login(form)" type="submit" class="btn btn-primary">Submit</button>
+        <div class="mb-3">
+            <input type="password" formControlName="password" class="form-control" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
-    <!-- <div class="text-center">
-        <p>Not a member? <a href="#!">Register</a></p>
-        <p>or sign up with:</p>
-        <button type="button" class="btn btn-link btn-floating mx-1">
-        <i class="fab fa-facebook-f"></i>
-        </button>
-
-        <button type="button" class="btn btn-link btn-floating mx-1">
-        <i class="fab fa-google"></i>
-        </button>
-
-        <button type="button" class="btn btn-link btn-floating mx-1">
-        <i class="fab fa-twitter"></i>
-        </button>
-
-        <button type="button" class="btn btn-link btn-floating mx-1">
-        <i class="fab fa-github"></i>
-        </button>
-    </div> -->

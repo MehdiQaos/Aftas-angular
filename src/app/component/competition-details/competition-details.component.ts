@@ -5,6 +5,7 @@ import { Fish, IFish } from 'src/app/models/fish';
 import { IMember, IdentityDocumentType, Member } from 'src/app/models/member';
 import { IMemberRanking } from 'src/app/models/memberRanking';
 import { IRankingMember, RankingMember } from 'src/app/models/rankingMember';
+import { AuthService } from 'src/app/service/auth.service';
 import { CompetitionService } from 'src/app/service/competition.service';
 import { FishService } from 'src/app/service/fish.service';
 import { HuntingService } from 'src/app/service/hunting.service';
@@ -37,14 +38,23 @@ export class CompetitionDetailsComponent {
     private huntingService: HuntingService,
     private rankingService: RankingService,
     private route: ActivatedRoute,
+    public auth: AuthService,
   ) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
+    this.loadPage();
+    // this.loadCompetition();
+    // this.loadMembers();
+    // this.loadFishes();
+    
+    // this.loadRankingsWithMembers(this.id);
+  }
+
+  loadPage(): void {
     this.loadCompetition();
     this.loadMembers();
     this.loadFishes();
-    
     this.loadRankingsWithMembers(this.id);
   }
 
@@ -88,7 +98,8 @@ export class CompetitionDetailsComponent {
   }
 
   registerMember() {
-    console.log(this.selectedMember.firstName);
+    if (!this.auth.isJury())
+      return;
     this.competitionService.registerMember(this.selectedMember, this.competition).subscribe(() => {
       Swal.fire({
         title: 'Success!',
@@ -96,6 +107,7 @@ export class CompetitionDetailsComponent {
         icon: 'success',
         confirmButtonText: 'OK'
       });
+      this.loadPage();
     }, (error) => { 
       Swal.fire({
         title: 'Error!',
@@ -113,6 +125,8 @@ export class CompetitionDetailsComponent {
   }
 
   addHunt() {
+    if (!this.auth.isJury())
+      return;
     const rankingId = this.selectedRanking.rankingId;
     const fishId = this.selectedFish.id;
     const weight = this.fishWeight;
@@ -123,6 +137,7 @@ export class CompetitionDetailsComponent {
         icon: 'success',
         confirmButtonText: 'OK'
       });
+      this.loadPage();
     }, (error) => { 
       Swal.fire({
         title: 'Error!',
@@ -139,6 +154,8 @@ export class CompetitionDetailsComponent {
   }
 
   searchMembers() {
+    if (!this.auth.isJury())
+      return;
     if (this.searchTerm.trim() === '') return;
     this.memberService.searchMembers(this.searchTerm).subscribe((data: IMember[]) => {
       this.searchedMembers = data;

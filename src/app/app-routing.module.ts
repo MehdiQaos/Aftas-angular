@@ -6,14 +6,15 @@ import { MembersComponent } from "./component/members/members.component";
 import { LoginComponent } from './component/login/login.component';
 import { RegisterComponent } from './component/register/register.component';
 import { AuthGuard } from './guard/auth.guard';
-import { IsAdminGuard } from './guard/is-admin.guard';
+import { AdminGuard } from './guard/is-admin.guard';
+import { NoAuthGuard } from './guard/no-auth.guard';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
   { path: 'competitions', component: CompetitionsComponent, canActivate: [AuthGuard] },
   { path: 'competitions/:id', component: CompetitionDetailsComponent, canActivate: [AuthGuard] },
-  { path: 'members', component: MembersComponent, canActivate: [AuthGuard, IsAdminGuard] },
+  { path: 'members', component: MembersComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: '**', redirectTo: 'competitions' }
 ];
 

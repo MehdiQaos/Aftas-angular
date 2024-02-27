@@ -29,13 +29,17 @@ export class MemberService {
     return this.httpClient.get<IMember>(`${this.url}/${id}`);
   }
 
-  createMember(member: IMember): Observable<any> {
-    return this.httpClient.post(this.url, member);
+  createMember(member: any): Observable<any> {
+    return this.httpClient.post(this.envService.ApiUrl + "/auth/signup", member);
   }
 
   searchMembers(searchTerm: string) {
     const url = `${this.url}/search/${searchTerm}`;
     console.log(url);
     return this.httpClient.get<IMember[]>(url);
+  }
+
+  setStatus(member: IMember): Observable<any> {
+    return this.httpClient.post(`${this.url}/${member.id}/${member.enabled}`, {});
   }
 }

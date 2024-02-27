@@ -11,7 +11,7 @@
         </select>
       </div>
     </div>
-    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createCompetitionModal">
+    <button *ngIf="auth.isJury()" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createCompetitionModal">
       <i class="fas fa-plus"></i> New Competition
     </button>
   </div>
@@ -25,7 +25,7 @@
         <th scope="col">End Time</th>
         <th scope="col">Location</th>
         <th scope="col">Status</th>
-        <th scope="col">Actions</th>
+        <th *ngIf="auth.isAdmin()" scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -44,7 +44,7 @@
             'badge-coming': competition.status === 'COMING'
           }">{{competition.status}}</span>
         </td>
-        <td>
+        <td *ngIf="auth.isAdmin()">
           <button class="btn btn-sm btn-outline-success me-1" (click)="openEditModal(competition)">
             <i class="fas fa-edit"></i>
           </button>

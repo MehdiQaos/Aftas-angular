@@ -13,6 +13,7 @@
         <th scope="col">Last name</th>
         <th scope="col">Identity number</th>
         <th scope="col">Nationality</th>
+        <th scope="col">enable</th>
       </tr>
     </thead>
     <tbody>
@@ -22,6 +23,11 @@
         <td>{{member.lastName}}</td>
         <td>{{member.identityNumber}}</td>
         <td>{{member.nationality}}</td>
+        <td>
+          <div class="form-check form-switch">
+            <input class="form-check-input" [(ngModel)]="member.enabled" (change)="toggleMemberStatus(member)" type="checkbox" role="switch">
+          </div>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -55,25 +61,38 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <!-- <div>
+          {{ errors | json }}
+        </div> -->
+        <form [formGroup]="form">
           <div class="mb-3">
             <label for="firstName" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="newMember.firstName">
+            <input type="text" class="form-control" id="firstName" formControlName="firstName" >
             <span class="text-danger" *ngIf="errors['firstName']">{{ errors['firstName'] }}</span>
           </div>
           <div class="mb-3">
             <label for="lastName" class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="newMember.lastName">
+            <input type="text" class="form-control" id="lastName" formControlName="lastName" >
             <span class="text-danger" *ngIf="errors['lastName']">{{ errors['lastName'] }}</span>
           </div>
           <div class="mb-3">
+            <label for="lastName" class="form-label">Email</label>
+            <input type="text" class="form-control" id="email" formControlName="email" >
+            <span class="text-danger" *ngIf="errors['email']">{{ errors['email'] }}</span>
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" formControlName="password" >
+            <span class="text-danger" *ngIf="errors['password']">{{ errors['password'] }}</span>
+          </div>
+          <div class="mb-3">
             <label for="identityNumber" class="form-label">Identity Number</label>
-            <input type="text" class="form-control" id="identityNumber" name="identityNumber" [(ngModel)]="newMember.identityNumber">
+            <input type="text" class="form-control" id="identityNumber" formControlName="identityNumber" >
             <span class="text-danger" *ngIf="errors['identityNumber']">{{ errors['identityNumber'] }}</span>
           </div>
           <div class="mb-3">
             <label for="identityDocumentTypeId" class="form-label">Identity type</label>
-            <select class="form-select me-2" id="identityDocumentTypeId" name="identityDocumentTypeId" [(ngModel)]="newMember.identityDocumentTypeId">
+            <select class="form-select me-2" id="identityDocumentTypeId" formControlName="identityDocumentTypeId" >
               <option value="0">CIN</option>
               <option value="1">CARTE_RESIDENCE</option>
               <option value="2">PASSPORT</option>
@@ -81,12 +100,12 @@
           </div>
           <div class="mb-3">
             <label for="nationality" class="form-label">Nationality</label>
-            <input type="text" class="form-control" id="nationality" name="nationality" [(ngModel)]="newMember.nationality">
+            <input type="text" class="form-control" id="nationality" formControlName="nationality" >
             <span class="text-danger" *ngIf="errors['nationality']">{{ errors['nationality'] }}</span>
           </div>
           <div class="mb-3">
             <label for="birthDate" class="form-label">Birth Date</label>
-            <input type="date" class="form-control" id="birthDate" name="birthDate" [(ngModel)]="newMember.birthDate">
+            <input type="date" class="form-control" id="birthDate" formControlName="birthDate" >
             <span class="text-danger" *ngIf="errors['birthDate']">{{ errors['birthDate'] }}</span>
           </div>
         </form>

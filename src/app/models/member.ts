@@ -6,7 +6,9 @@ export interface IMember {
     identityNumber: string;
     nationality: string;
     birthDate: Date;
+    enabled: boolean;
     identityDocumentTypeId: number;
+    password?: string;
 }
 
 export enum IdentityDocumentType {
@@ -24,6 +26,7 @@ export class Member implements IMember {
         public identityNumber: string = '',
         public nationality: string = '',
         public birthDate: Date = new Date(),
+        public enabled: boolean = false,
         public identityDocumentTypeId: number = 0,
     ) {}
 }

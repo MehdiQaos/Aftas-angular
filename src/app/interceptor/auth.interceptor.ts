@@ -9,13 +9,12 @@ import { Observable } from 'rxjs';
 import { StoreService } from '../service/store.service';
 
 @Injectable()
-export class CustomInterceptor implements HttpInterceptor {
+export class AuthInterceptor implements HttpInterceptor {
 
   constructor(private store: StoreService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const accessToken = this.store.getAccessToken();
-    const refreshToken = this.store.getRefreshToken();
 
     if (accessToken) {
       const cloned = request.clone(

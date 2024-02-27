@@ -5,6 +5,7 @@ import { IPage, Page } from "../../models/pagination/page";
 import { IPageable, Pageable } from "../../models/pagination/pageable";
 import { IErrors } from "../../models/errors";
 import Swal from "sweetalert2";
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-members',
@@ -21,13 +22,25 @@ export class MembersComponent {
   pageNumber: number = 0;
   newMember: IMember = new Member();
   errors: IErrors = {};
+  form!: FormGroup;
 
   constructor(
     private memberService: MemberService,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {
     this.reloadPage();
+    this.form = this.formBuilder.group({
+      firstName: '',
+      lastName: '',
+      nationality: '',
+      birthDate: '',
+      identityNumber: '',
+      identityDocumentTypeId: '',
+      email: '',
+      password: ''
+    });
   }
 
   loadMembers(page: number, size: number): void {
@@ -42,12 +55,27 @@ export class MembersComponent {
     });
   }
 
+  toggleMemberStatus(member: IMember): void {
+    console.log(`id: ${member.id} - toggled`);
+    
+    this.memberService.setStatus(member).subscribe({
+      next: () => {
+        Swal.fire({ icon: 'success', title: 'Member status updated successfully', showConfirmButton: false, timer: 1500 });
+      },
+      error: (error: any) => {
+        Swal.fire({ icon: 'error', title: 'Oops...', text: error.error.message });
+        console.log(error);
+        member.enabled = !member.enabled;
+      }
+    });
+  }
+
   reloadPage(): void {
     this.loadMembers(this.pageNumber, this.pageSize);
   }
 
   createMember() {
-    this.memberService.createMember(this.newMember).subscribe({
+    this.memberService.createMember(this.form.getRawValue()).subscribe({
       next: () => {
         this.reloadPage();
         this.newMember = new Member();
@@ -56,9 +84,9 @@ export class MembersComponent {
             this.closeCreateMemberModal();
         });
       },
-      error: (error) => {
+      error: (error: any) => {
         Swal.fire({ icon: 'error', title: 'Oops...', text: 'Something went wrong!' });
-        console.log(error);
+        this.errors = error.error.errors;
       }
     });
   }

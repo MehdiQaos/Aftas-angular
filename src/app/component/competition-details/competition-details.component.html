@@ -31,15 +31,14 @@
 </div>
 
 <div class="container mt-5">
-
     <div class="d-flex justify-content-between align-items-center">
         <h2 *ngIf="competition.status === 'COMPLETED'">Podium</h2>
         <h2 *ngIf="competition.status === 'ACTIVE'">Top members</h2>
         <h2 *ngIf="!competitionActifOrCompleted()">Registred members</h2>
-    <button *ngIf="competition.status === 'COMING'" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#regiterMemberModal">
+    <button *ngIf="competition.status === 'COMING' && auth.isJury()" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#regiterMemberModal">
         <i class="fas fa-plus"></i> New
     </button>
-    <button *ngIf="competition.status === 'ACTIVE'" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#newHuntModal">
+    <button *ngIf="competition.status === 'ACTIVE' && auth.isJury()" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#newHuntModal">
         <i class="fas fa-plus"></i> New Hunt
     </button>
     </div>
@@ -68,6 +67,9 @@
             </tr>
         </tbody>
     </table>
+</div>
+<div *ngIf="members.length == 0" class="container my-5">
+    <h1>No registred members yet</h1>
 </div>
 
 <!-- new member Modal -->
@@ -109,7 +111,7 @@
             <div class="mb-3">
                 <label for="memberSelect" class="form-label">Select member</label>
                 <select class="form-select" id="memberSelect" [(ngModel)]="selectedRanking">
-                    <option *ngFor="let ranking of rankingMembers" [ngValue]="ranking">{{ ranking.memberId }} : {{ ranking.firstName + " " }} + {{ ranking.lastName }}</option>
+                    <option *ngFor="let ranking of rankingMembers" [ngValue]="ranking">{{ ranking.memberId }} : {{ ranking.firstName + " " }} {{ ranking.lastName }}</option>
                 </select>
             </div>
             <div class="mb-3">

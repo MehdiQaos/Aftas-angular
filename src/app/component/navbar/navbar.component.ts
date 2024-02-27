@@ -12,14 +12,18 @@ import { StoreService } from 'src/app/service/store.service';
 })
 export class NavbarComponent {
   url: string;
-  auth: AuthService = inject(AuthService);
 
   constructor(
     private http: HttpClient, 
     private router: Router,
     private envService: EnvService,
-    private store: StoreService,
+    public auth: AuthService,
+    public store: StoreService,
   ) { 
     this.url = envService.ApiUrl + "/auth/logout";
+  }
+
+  isLogedIn() {
+    return this.store.isAuthenticated();
   }
 }

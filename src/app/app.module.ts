@@ -13,9 +13,8 @@ import { CompetitionDetailsComponent } from './component/competition-details/com
 import { FishesComponent } from './component/fishes/fishes.component';
 import { MembersComponent } from './component/members/members.component';
 import { LoginComponent } from './component/login/login.component';
-import { CustomInterceptor } from './interceptor/custom.interceptor';
 import { RegisterComponent } from './component/register/register.component';
-import { HandleErrorInterceptor } from './interceptor/handle-error.interceptor';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -38,8 +37,7 @@ import { HandleErrorInterceptor } from './interceptor/handle-error.interceptor';
     FormsModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: HandleErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

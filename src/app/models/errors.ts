@@ -11,4 +11,5 @@ export interface IErrors {
   identityNumber?: string;
   nationality?: string;
   birthDate?: string;
+  password?: string;
 }

@@ -5,6 +5,7 @@ import { IPage, Page } from 'src/app/models/pagination/page';
 import { IPageable, Pageable } from 'src/app/models/pagination/pageable';
 import Swal from 'sweetalert2';
 import {IErrors} from "../../models/errors";
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-competitions',
@@ -26,6 +27,7 @@ export class CompetitionsComponent {
 
   constructor(
     private competitionService: CompetitionService,
+    public auth: AuthService
   ) {
   }
 

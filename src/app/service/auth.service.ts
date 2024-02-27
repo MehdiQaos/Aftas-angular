@@ -32,24 +32,18 @@ export class AuthService {
   login(form: any) {
     const url = this.envService.ApiUrl + "/auth/login";
     
-    this.http.post(url, { email: form.email, password: form.password }).subscribe({
-      next: (res) => this.getToken(res)
-    });
+    return this.http.post(url, { email: form.email, password: form.password });
   }
 
   register(form: any) {
     const url = this.envService.ApiUrl + "/auth/signup";
 
-    this.http.post(url, form, httpOptions).subscribe({
-      next: (res) => this.getToken(res)
-    });
+    return this.http.post(url, form, httpOptions);
   }
 
-  private getToken(res: any) {
+  processToken(res: any) {
     this.saveTokens(res);
     
-    this.store.setAccessToken(res.accessToken);
-    this.store.setRefreshToken(res.refreshToken);
     const email = getUserFromToken(res.accessToken);
     this.store.setAuthenticated(true);
     this.getUser(email);
@@ -59,7 +53,6 @@ export class AuthService {
     this.store.setAuthorities(authorities);
     
     this.router.navigate(['/competitions']);
-    console.log("navigating");
   }
 
   private saveTokens(res: any) {
@@ -71,29 +64,53 @@ export class AuthService {
     const url = this.envService.ApiUrl + "/auth/logout";
     
     this.http.post(url, {}, httpOptions).subscribe((res: any) => {
-      this.store.setAccessToken(null);
-      this.store.setRefreshToken(null);
-      this.store.clearUser();
+      this.store.clearAuth();
       this.router.navigate(['/login']);
     });
   }
 
   refresh() {
     const url = this.envService.ApiUrl + "/auth/refresh";
+    this.store.setAccessToken(null);
+    const refreshToken = this.store.getRefreshToken();
+    const newHttpOptions = {
+      headers: new HttpHeaders({ 'X-Refresh-Token': `Bearer ${refreshToken}` })
+    };
+    // const modifedHttpOptions = {
+    //   ...httpOptions,
+    //   headers: { ...httpOptions.headers, Authorization: `Authorization: Bearer ${refreshToken}` }
+    // }
     
-    return this.http.post(url, {}, httpOptions).subscribe({
-      next: (data: any) => {
-        localStorage.setItem('accessToken', data.accessToken);
-        console.log(data);
-      },
-      error: (err: any) => {
-        if (err.status === 401 || err.status === 403) {
-          this.store.setAccessToken(null);
-          this.store.setRefreshToken(null);
-          this.store.clearUser();
-          this.router.navigate(['/login']);
-        }
-      }
-    });
+    return this.http.post(url, {}, newHttpOptions);
+    // return this.http.post(url, {}, newHttpOptions).subscribe({
+    //   next: (data: any) => {
+    //     this.store.setAccessToken(data.accessToken);
+    //     console.log(data);
+    //   },
+    //   error: (err: any) => {
+    //     if (err.status === 401 || err.status === 403) {
+    //       this.store.clearAuth();
+    //       this.router.navigate(['/login']);
+    //     }
+    //   }
+    // });
+  }
+
+  isAdmin() {
+    return this.store.isAuthenticated() &&
+      this.store.getAuthorities().includes('ROLE_ADMIN');
+  }
+
+  isJury() {
+    return this.store.isAuthenticated() &&
+      (this.store.getAuthorities().includes('ROLE_ADMIN') ||
+      this.store.getAuthorities().includes('ROLE_JURY'));
+  }
+
+  isUser() {
+    return this.store.isAuthenticated() &&
+      (this.store.getAuthorities().includes('ROLE_ADMIN') ||
+      this.store.getAuthorities().includes('ROLE_JURY') ||
+      this.store.getAuthorities().includes('ROLE_USER'));
   }
 }
